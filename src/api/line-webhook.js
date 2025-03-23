@@ -1,3 +1,12 @@
+import { Client } from '@line/bot-sdk';
+
+const config = {
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
+};
+
+const client = new Client(config);
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     // Webhook検証用のGETリクエストに対応
