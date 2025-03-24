@@ -1,4 +1,6 @@
 import { Client } from '@line/bot-sdk';
+import { sendLineNotification } from './line-notify';
+
 
 const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
@@ -29,6 +31,8 @@ export default async function handler(req, res) {
             type: 'text',
             text: `受信メッセージ: ${event.message.text}`,
           });
+          await sendLineNotification(`受信メッセージ: ${event.message.text}`);
+
         }
       })
     );
