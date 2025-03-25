@@ -1,9 +1,5 @@
-import App from '../App';
+import WorkAllocationApp from '../App'
 
 export default function Home() {
-  return (
-    <>
-      <App />
-    </>
-  );
+  return <WorkAllocationApp />
 }
