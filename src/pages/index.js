@@ -1,5 +1,7 @@
-import WorkAllocationApp from '../App'
+// 例）コメントを1行追加するだけでもOK
+import WorkAllocationApp from '../App';
 
 export default function Home() {
-  return <WorkAllocationApp />
+  // Appを表示します
+  return <WorkAllocationApp />;
 }
