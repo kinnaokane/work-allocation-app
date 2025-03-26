@@ -824,6 +824,15 @@ const WorkAllocationApp = () => {
   return (
     <div className="p-4 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">作業割り当てアプリ 【{nextDate}】</h1>
+      <div className="flex justify-end mb-4">
+  <button
+    onClick={() => window.location.reload()}
+    className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition-colors"
+  >
+    🔄 アプリを更新
+  </button>
+</div>
+
 
       {/* タブレット向けの上部アクションボタン */}
       <div className="flex justify-between items-center mb-6">
