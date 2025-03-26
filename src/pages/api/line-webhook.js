@@ -7,6 +7,8 @@ export default async function handler(req, res) {
     // イベントごとに処理
     await Promise.all(
       events.map(async (event) => {
+        console.log('✅ 受信したイベント:', JSON.stringify(event, null, 2));
+
         if (event.type === 'message' && event.message.type === 'text') {
           const userMessage = event.message.text;
           await sendLineNotification(`ユーザーからのメッセージ: ${userMessage}`);

@@ -1,5 +1,7 @@
 export async function sendLineNotification(message) {
-    const groupId = 'YOUR_GROUP_ID'; // ✅ 後ほど本物のグループIDに置き換える
+    const groupId = process.env.GROUP_ID; // ✅ .env.local / Vercelに設定したグループID
+    console.log("✅ groupId:", groupId); // デバッグ用ログ（ログで確認できる）
+  
     const headers = {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
@@ -23,7 +25,8 @@ export async function sendLineNotification(message) {
       });
   
       if (!response.ok) {
-        console.error('❌ LINE送信エラー', await response.text());
+        const errorText = await response.text();
+        console.error('❌ LINE送信エラー:', errorText);
       } else {
         console.log('✅ LINEにメッセージを送信しました');
       }
