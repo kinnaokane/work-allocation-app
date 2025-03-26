@@ -825,14 +825,13 @@ const WorkAllocationApp = () => {
     <div className="p-4 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">作業割り当てアプリ 【{nextDate}】</h1>
       <div className="flex justify-end mb-4">
-  <button
-    onClick={() => window.location.reload()}
-    className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition-colors"
-  >
-    🔄 アプリを更新
-  </button>
-</div>
-
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-200 transition-colors"
+        >
+          🔄 アプリを更新
+        </button>
+      </div>
 
       {/* タブレット向けの上部アクションボタン */}
       <div className="flex justify-between items-center mb-6">
@@ -909,39 +908,50 @@ const WorkAllocationApp = () => {
           本日のタレを選択
         </h2>
         <div className="flex flex-wrap gap-4 mb-8">
+          {/* ✅ タレA */}
           <button
             onClick={() => toggleTare("A")}
             disabled={isAllocated}
-            className={`flex items-center px-6 py-3 rounded-lg text-lg ${
-              selectedTare.A ? "bg-blue-100 text-blue-800 border-blue-300 font-medium" : "bg-gray-100 text-gray-700"
-            } border-2 transition-colors ${isAllocated ? "opacity-70 cursor-not-allowed" : "hover:bg-gray-200 active:scale-95 transform"}`}
+            className={`flex items-center px-6 py-3 rounded-lg text-lg font-semibold
+    ${selectedTare.A ? "bg-blue-600 text-white border-blue-700" : "bg-gray-100 text-gray-700"} 
+    border-2 shadow-sm hover:shadow-md transition-all`}
           >
             <Coffee size={24} className="mr-3" />
             タレA
           </button>
 
+          {/* ✅ タレB */}
           <button
             onClick={() => toggleTare("B")}
             disabled={isAllocated}
-            className={`flex items-center px-6 py-3 rounded-lg text-lg ${
-              selectedTare.B ? "bg-green-100 text-green-800 border-green-300 font-medium" : "bg-gray-100 text-gray-700"
-            } border-2 transition-colors ${isAllocated ? "opacity-70 cursor-not-allowed" : "hover:bg-gray-200 active:scale-95 transform"}`}
+            className={`flex items-center px-6 py-3 rounded-lg text-lg font-semibold
+    ${selectedTare.B ? "bg-green-600 text-white border-green-700" : "bg-gray-100 text-gray-700"} 
+    border-2 shadow-sm hover:shadow-md transition-all`}
           >
             <Coffee size={24} className="mr-3" />
             タレB
           </button>
 
+          {/* ✅ タレC */}
           <button
             onClick={() => toggleTare("C")}
             disabled={isAllocated}
-            className={`flex items-center px-6 py-3 rounded-lg text-lg ${
-              selectedTare.C
-                ? "bg-purple-100 text-purple-800 border-purple-300 font-medium"
-                : "bg-gray-100 text-gray-700"
-            } border-2 transition-colors ${isAllocated ? "opacity-70 cursor-not-allowed" : "hover:bg-gray-200 active:scale-95 transform"}`}
+            className={`flex items-center px-6 py-3 rounded-lg text-lg font-semibold
+    ${selectedTare.C ? "bg-purple-600 text-white border-purple-700" : "bg-gray-100 text-gray-700"} 
+    border-2 shadow-sm hover:shadow-md transition-all`}
           >
             <Coffee size={24} className="mr-3" />
             タレC
+          </button>
+        </div>
+
+        {/* ✅ LINE送信ボタン */}
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={() => sendLineNotification(formatResultForSharing())}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all"
+          >
+            LINEに送信
           </button>
         </div>
       </div>
@@ -1085,43 +1095,45 @@ const WorkAllocationApp = () => {
   )
 }
 
-export default WorkAllocationApp
+// sendLineNotification関数を定義
 const sendLineNotification = async (message) => {
-  const groupId = process.env.NEXT_PUBLIC_GROUP_ID;
-  const token = process.env.NEXT_PUBLIC_LINE_CHANNEL_ACCESS_TOKEN;
+  const groupId = process.env.NEXT_PUBLIC_GROUP_ID
+  const token = process.env.NEXT_PUBLIC_LINE_CHANNEL_ACCESS_TOKEN
 
   if (!token || !groupId) {
-    alert("LINE通知の設定が不足しています。");
-    return;
+    alert("LINE通知の設定が不足しています。")
+    return
   }
 
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
-  };
+  }
 
   const body = JSON.stringify({
     to: groupId,
     messages: [{ type: "text", text: message }],
-  });
+  })
 
   try {
     const response = await fetch("https://api.line.me/v2/bot/message/push", {
       method: "POST",
       headers,
       body,
-    });
+    })
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error("LINE送信エラー:", errorText);
-      alert("LINE通知に失敗しました");
+      const errorText = await response.text()
+      console.error("LINE送信エラー:", errorText)
+      alert("LINE通知に失敗しました")
     } else {
-      alert("LINE通知を送信しました！");
+      alert("LINE通知を送信しました！")
     }
   } catch (error) {
-    console.error("LINE通知送信中の例外:", error);
-    alert("LINE通知の送信に失敗しました。");
+    console.error("LINE通知送信中の例外:", error)
+    alert("LINE通知の送信に失敗しました。")
   }
-};
+}
+
+export default WorkAllocationApp
 
