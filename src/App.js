@@ -1077,4 +1077,42 @@ const WorkAllocationApp = () => {
 }
 
 export default WorkAllocationApp
+const sendLineNotification = async (message) => {
+  const groupId = process.env.NEXT_PUBLIC_GROUP_ID;
+  const token = process.env.NEXT_PUBLIC_LINE_CHANNEL_ACCESS_TOKEN;
+
+  if (!token || !groupId) {
+    alert("LINE通知の設定が不足しています。");
+    return;
+  }
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
+  const body = JSON.stringify({
+    to: groupId,
+    messages: [{ type: "text", text: message }],
+  });
+
+  try {
+    const response = await fetch("https://api.line.me/v2/bot/message/push", {
+      method: "POST",
+      headers,
+      body,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("LINE送信エラー:", errorText);
+      alert("LINE通知に失敗しました");
+    } else {
+      alert("LINE通知を送信しました！");
+    }
+  } catch (error) {
+    console.error("LINE通知送信中の例外:", error);
+    alert("LINE通知の送信に失敗しました。");
+  }
+};
 
